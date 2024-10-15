@@ -4,7 +4,9 @@ import time
 import aiohttp
 import spacy
 from django.shortcuts import render
+from textblob import TextBlob
 from transformers import pipeline
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 # Load spaCy's English model
 nlp = spacy.load("en_core_web_sm")
@@ -12,11 +14,13 @@ nlp = spacy.load("en_core_web_sm")
 # Transformers coherence model (optional)
 coherence_model = pipeline("text-classification", model="distilbert-base-uncased-finetuned-sst-2-english")
 
+# Initialize the VADER sentiment analyzer
+analyzer = SentimentIntensityAnalyzer()
 
 # API keys (replace with actual API keys)
-OPENAI_API_KEY = "haha...API nahi doonga main apna, env mein chupa ke rakhe hain"
-CLAUDE_API_URL = "haha...API nahi doonga main apna, env mein chupa ke rakhe hain"
-GEMINI_API_URL = "haha...API nahi doonga main apna, env mein chupa ke rakhe hain"
+OPENAI_API_KEY = "haha...API nahi doonga main apna, env filhaal use nahi kiya hai"
+CLAUDE_API_URL = "haha...API nahi doonga main apna, env filhaal use nahi kiya hai"
+GEMINI_API_URL = "haha...API nahi doonga main apna, env filhaal use nahi kiya hai"
 
 # Asynchronous function to fetch responses from each LLM
 async def fetch_llm_response(url, data, headers):
@@ -33,36 +37,6 @@ async def route_llm_call(prompt):
     ]
     return await asyncio.gather(*llm_calls)
 
-# Custom Scoring System
-def score_response(response):
-    # Example scoring system: length of response, fluency, and speed
-    length_score = len(response.get("text", ""))
-    # For now, use response time for scoring
-    fluency_score = 1  # Placeholder, you can add NLP fluency checks here
-    time_score = 1 / response.get("time_taken", 1)  # prioritize faster responses
-    return length_score + fluency_score + time_score
-
-def select_best_response(responses):
-    scored_responses = []
-    for response in responses:
-        start_time = time.time()
-        score = score_response({"text": response["choices"][0]["text"], "time_taken": time.time() - start_time})
-        scored_responses.append((score, response))
-
-    # Return the response with the highest score
-    return max(scored_responses, key=lambda x: x[0])[1]
-
-# Django view
-def index(request):
-    if request.method == "POST":
-        prompt = request.POST.get("prompt")
-        responses = asyncio.run(route_llm_call(prompt))
-        best_response = select_best_response(responses)
-        return render(request, "index.html", {"response": best_response})
-
-    return render(request, "index.html")
-
-
 # Fluency Check with spaCy
 def check_fluency(response_text):
     doc = nlp(response_text)
@@ -78,12 +52,7 @@ def check_fluency(response_text):
 def check_coherence(response_text):
     result = coherence_model(response_text)
     sentiment = result[0]['label']
-    if sentiment == 'POSITIVE':
-        return 1
-    else:
-        return 0
-
-
+    return 1 if sentiment == 'POSITIVE' else 0
 
 # List of keywords for detecting humor
 HUMOR_KEYWORDS = ["funny", "joke", "haha", "lol", "lmao", "rofl", "pun", "comedy", "humor"]
@@ -93,29 +62,65 @@ def detect_humor_keywords(response_text):
     humor_count = sum(1 for word in HUMOR_KEYWORDS if word in response_text.lower())
     return humor_count > 0  # Return True if humor is detected
 
+# Combined Sentiment Analysis
+def analyze_sentiment_combined(response_text):
+    """Perform sentiment analysis using both TextBlob and VADER, and return the average sentiment score."""
+    # TextBlob Sentiment Analysis
+    blob = TextBlob(response_text)
+    textblob_sentiment = blob.sentiment.polarity  # Scale: -1 (negative) to 1 (positive)
+
+    # VADER Sentiment Analysis
+    vader_sentiment = analyzer.polarity_scores(response_text)['compound']  # Scale: -1 to 1
+
+    # Combine both scores by averaging
+    combined_sentiment = (textblob_sentiment + vader_sentiment) / 2
+    return combined_sentiment
+
+# Custom Scoring System
 def score_response(response):
     response_text = response.get("choices")[0].get("text", "")
 
-    # Fluency score from spaCy
+    # Individual scores
     fluency_score = check_fluency(response_text)
-
-    # Coherence score (optional)
     coherence_score = check_coherence(response_text)
-
-    # Length score (for response completeness)
     length_score = len(response_text)
-
-    # Humor detection (using both methods)
     humor_keyword_score = 1 if detect_humor_keywords(response_text) else 0
-    humor_model_score = 1 if detect_humor_model(response_text) else 0
-
-    # Combine humor scores (you can assign weights or use one method)
+    humor_model_score = 1 if detect_humor_keywords(response_text) else 0  # Add actual model-based detection here
     humor_score = (humor_keyword_score + humor_model_score) / 2
+    sentiment_score = analyze_sentiment_combined(response_text)
 
-    # Example time score (based on response time)
+    # Time score (based on response time)
     time_score = 1 / response.get("time_taken", 1)  # Prioritize faster responses
 
-    # Combine the scores with weighting (adjust weights as necessary)
-    total_score = (fluency_score * 0.3) + (coherence_score * 0.2) + (length_score * 0.2) + (humor_score * 0.2) + (time_score * 0.1)
+    # Combine the scores with weighting
+    total_score = (
+        (fluency_score * 0.25) +
+        (coherence_score * 0.2) +
+        (length_score * 0.2) +
+        (humor_score * 0.15) +
+        (sentiment_score * 0.1) +
+        (time_score * 0.1)
+    )
 
     return total_score
+
+# Function to select the best response based on the scoring system
+def select_best_response(responses):
+    scored_responses = []
+    for response in responses:
+        start_time = time.time()
+        score = score_response({"choices": [response], "time_taken": time.time() - start_time})
+        scored_responses.append((score, response))
+
+    # Return the response with the highest score
+    return max(scored_responses, key=lambda x: x[0])[1]
+
+# Django view
+def index(request):
+    if request.method == "POST":
+        prompt = request.POST.get("prompt")
+        responses = asyncio.run(route_llm_call(prompt))
+        best_response = select_best_response(responses)
+        return render(request, "index.html", {"response": best_response})
+
+    return render(request, "index.html")
