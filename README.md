@@ -70,6 +70,11 @@ We implemented Sentiment Analysis using libraries like TextBlob or VADER. Sentim
 
 ```
 
+### This is somewhat it will look like on local :
+
+![alt text](<Screenshot 2024-10-15 at 7.39.38 AM.png>){width=550 height=550}
+
+
 ### To get started with RouteLLM, follow these steps:
 
 ### Prerequisites
