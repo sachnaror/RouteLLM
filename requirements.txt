@@ -1,6 +1,44 @@
+# Django framework
+Django>=4.0,<5.0
 
-# django==3.1.3
-# django-cors-headers==3.5.0
-# djangorestframework==3.12.2
-# mysqlclient==2.0.1
+# SpaCy for natural language processing
+spacy>=3.0,<4.0
+# Download the spaCy model
+en-core-web-sm>=3.0,<4.0
 
+# Optional: If you're using a specific database backend (for example, PostgreSQL)
+psycopg2-binary  # For PostgreSQL
+# Or if you're using MySQL
+mysqlclient  # For MySQL
+
+# Additional packages you might need
+# For handling .env files (recommended for secret management)
+python-dotenv>=0.19.0
+
+# For handling CORS (Cross-Origin Resource Sharing)
+django-cors-headers>=3.10,<4.0
+
+# If you are planning to use Django REST Framework
+djangorestframework>=3.12,<4.0
+
+# If you want to include testing tools
+pytest>=7.0,<8.0
+pytest-django>=4.0,<5.0
+
+# For development utilities
+black>=22.0,<23.0  # Code formatter
+isort>=5.0,<6.0  # Import sorter
+flake8>=4.0,<5.0  # Linter
+
+# For handling data validation and serialization
+marshmallow>=3.15,<4.0
+
+# For any additional libraries you might require for specific functionalities
+# requests: for making HTTP requests
+requests>=2.25,<3.0
+# numpy: for numerical operations (if needed)
+numpy>=1.20,<2.0
+# pandas: for data manipulation (if needed)
+pandas>=1.2,<2.0
+
+# Other packages as per your project requirements
