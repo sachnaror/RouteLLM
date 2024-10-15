@@ -70,9 +70,7 @@ We implemented Sentiment Analysis using libraries like TextBlob or VADER. Sentim
 
 ```
 
-## ⚙️ Installation
-
-To get started with RouteLLM, follow these steps:
+### To get started with RouteLLM, follow these steps:
 
 ### Prerequisites
 
@@ -81,20 +79,12 @@ To get started with RouteLLM, follow these steps:
 ### Installation
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/RouteLLM.git
-   cd RouteLLM
-   ```
-
-### Installation
-
-1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/RouteLLM.git
+git clone https://github.com/sachnaror/RouteLLM.git
 cd RouteLLM
 ```
 
-2. Create a virtual environment and activate it:
+2. Create a virtual environment and activate it (i hate to explain this ..but):
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
@@ -117,7 +107,7 @@ python manage.py runserver
 
 ### Requirements
 
-Here's what you need in your `requirements.txt` to get RouteLLM running smoothly:
+Check the  `requirements.txt` file first to get RouteLLM running smoothly:
 
 * Django>=4.0
 * spacy>=3.0
@@ -143,10 +133,5 @@ Then submit a pull request!
 
 ### Questions?
 
-If you have any questions or suggestions, feel free to open an issue or contact me directly!
+If you have any questions or suggestions : schnaror@gmail.com
 
-### License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-Get ready for a whirlwind of AI fun with RouteLLM—where neural networks and personality collide! 💥
