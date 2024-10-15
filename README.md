@@ -1,3 +1,6 @@
+![image](https://github.com/user-attachments/assets/306e440e-62aa-4ac8-b13e-1faa32ab1804)
+
+
 # RouteLLM: The Ultimate AI Matchmaker 🚀
 
 Ever wondered what happens when Claude Sonnet 3.5, OpenAI o1, GPT-4o, and Gemini walk into a bar? 🍻 Well, welcome to **RouteLLM**—where AI egos clash and only the smartest survive!
