@@ -5,9 +5,9 @@ import aiohttp
 from django.shortcuts import render
 
 # API keys (replace with actual API keys)
-OPENAI_API_KEY = "your_openai_api_key"
-CLAUDE_API_URL = "your_claude_api_url"
-GEMINI_API_URL = "your_gemini_api_url"
+OPENAI_API_KEY = "haha...API nahi doonga main apna, env mein chupa ke rakhe hain"
+CLAUDE_API_URL = "haha...API nahi doonga main apna, env mein chupa ke rakhe hain"
+GEMINI_API_URL = "haha...API nahi doonga main apna, env mein chupa ke rakhe hain"
 
 # Asynchronous function to fetch responses from each LLM
 async def fetch_llm_response(url, data, headers):
