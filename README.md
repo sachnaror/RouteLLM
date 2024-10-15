@@ -11,7 +11,7 @@ RouteLLM is an innovative application designed to be the ultimate AI matchmaker!
 1. **Custom Scoring System**: Based on response time, fluency, and humor.
 2. **Parallel Execution**: API requests will be made in parallel using asynchronous programming.
 3. **User Interface (UI)**: Django and Bootstrap 5 will be used for the front-end.
-4. **Fluency Analysis**: Use NLP libraries like spacy or transformers to check for grammar and coherence in the responses.
+4. **Fluency Analysis**: Use NLP libraries like spaCy or transformers to check for grammar and coherence in the responses.
 5. **Humor Detection**: Analyze responses for humor using keyword detection or advanced models.
 6. **Sentiment Analysis**: Add sentiment analysis using a library like TextBlob or VADER to refine the scoring system.
 
@@ -35,24 +35,48 @@ In RouteLLM, we can analyze the generated responses for humorous elements using 
 We implemented Sentiment Analysis using libraries like TextBlob or VADER. Sentiment Analysis will allow us to measure the emotional tone of the responses (positive, negative, or neutral), which can be factored into the scoring system.
 
 - **TextBlob Sentiment**: Returns a polarity value between -1 (negative) and 1 (positive).
-
 - **VADER Sentiment**: Provides a compound score on the same scale.
-
 - **Combined Sentiment Score**: We average the sentiment scores from both libraries to get a combined score.
 
-## How it works:
+## How it Works:
 
 1. TextBlob Sentiment returns a polarity value between -1 (negative) and 1 (positive).
 2. VADER Sentiment also provides a compound score on the same scale.
 3. We average the sentiment scores from both libraries to get a combined sentiment score.
+
+## How would it look a like at the end :
+
+```
+├── RouteLLM/
+│   ├── requirements.txt
+│   ├── db.sqlite3
+│   ├── README.md
+│   ├── .env
+│   ├── manage.py
+│   ├── RouteLLM/
+│   │   ├── asgi.py
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   └── wsgi.py
+│   ├── app/
+│   │   ├── models.py
+│   │   ├── apps.py
+│   │   ├── admin.py
+│   │   ├── tests.py
+│   │   ├── urls.py
+│   │   └── views.py
+│   │   ├── templates/
+│   │   │   └── index.html
+
+```
 
 ## ⚙️ Installation
 
 To get started with RouteLLM, follow these steps:
 
 ### Prerequisites
-- Python 3.8 or higher
-- Git
+
+- I'm not gonna explain this.
 
 ### Installation
 
@@ -60,3 +84,69 @@ To get started with RouteLLM, follow these steps:
    ```bash
    git clone https://github.com/yourusername/RouteLLM.git
    cd RouteLLM
+   ```
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/RouteLLM.git
+cd RouteLLM
+```
+
+2. Create a virtual environment and activate it:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+```
+
+3. Install the required packages:
+```bash
+pip install -r requirements.txt
+```
+
+4. Download the spaCy language model:
+```bash
+python -m spacy download en_core_web_sm
+```
+
+5. Run the application:
+```bash
+python manage.py runserver
+```
+
+### Requirements
+
+Here's what you need in your `requirements.txt` to get RouteLLM running smoothly:
+
+* Django>=4.0
+* spacy>=3.0
+* openai>=0.27.0
+* textblob>=0.15.3
+* vaderSentiment>=3.3.2
+
+Add any other dependencies as required.
+
+### Usage
+
+1. Launch the app and head to your browser at http://127.0.0.1:8000/.
+2. Sit back, relax, and let the AI showdown commence!
+3. Enjoy the witty banter and high-IQ fun as the models compete to impress you!
+
+### Contributing
+
+Feel free to contribute to RouteLLM! Check out the issues for ideas or create a new feature branch for your contributions:
+```bash
+git checkout -b feature/YourFeatureName
+```
+Then submit a pull request!
+
+### Questions?
+
+If you have any questions or suggestions, feel free to open an issue or contact me directly!
+
+### License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+Get ready for a whirlwind of AI fun with RouteLLM—where neural networks and personality collide! 💥
