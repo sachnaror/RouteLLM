@@ -9,7 +9,7 @@ RouteLLM is an innovative application designed to be the ultimate AI matchmaker!
 
 ## 🧐 This is somewhat it will look like on local :
 
-![alt text](<![alt text](/Users/homesachin/Desktop/Screenshot 2024-10-15 at 9.10.03 AM.png)>){width=550 height=550}
+![alt text](/Users/homesachin/Desktop/Screenshot 2024-10-15 at 9.10.03 AM.png){width=550 height=550}
 
 
 
