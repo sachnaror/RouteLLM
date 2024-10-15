@@ -29,10 +29,33 @@
     </div>
     <br>
     <div>
-        <h3>🥳 And the award for the best brainiac goes to (i.e. best response) : {{ winner_llm }}! 🏆</h3>
+        <h4></h4>
         <p>{{ response }}</p>
     </div>
     <br>
+
+
+
+    <!-- Display Scores Section -->
+    <div class="mt-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h4>🥳 And the award for the best brainiac goes to (i.e. best response) : {{ winner_llm }}! 🏆</h4>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <strong>Winner model:</strong> {{ fluency_score }}
+                    </li>
+
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
     <!-- Display Scores Section -->
     <div class="mt-4">
         <div class="card shadow-sm">
