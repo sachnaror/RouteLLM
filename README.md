@@ -6,6 +6,13 @@ Ever wondered what happens when Claude Sonnet 3.5, OpenAI o1, GPT-4o, and Gemini
 
 RouteLLM is an innovative application designed to be the ultimate AI matchmaker! Imagine speed dating for AI models, but with a twist of neural networks and zero awkward silences. 🤖✨ Watch as our brainy bots battle it out in a high-stakes showdown, where the best model gets picked to answer your queries.
 
+
+## This is somewhat it will look like on local :
+
+![alt text](<Screenshot 2024-10-15 at 7.39.38 AM.png>){width=550 height=550}
+
+
+
 ### Key Features:
 
 1. **Custom Scoring System**: Based on response time, fluency, and humor.
@@ -70,9 +77,6 @@ We implemented Sentiment Analysis using libraries like TextBlob or VADER. Sentim
 
 ```
 
-### This is somewhat it will look like on local :
-
-![alt text](<Screenshot 2024-10-15 at 7.39.38 AM.png>){width=550 height=550}
 
 
 ### To get started with RouteLLM, follow these steps:
