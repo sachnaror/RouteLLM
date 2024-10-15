@@ -2,7 +2,16 @@ import asyncio
 import time
 
 import aiohttp
+import spacy
 from django.shortcuts import render
+from transformers import pipeline
+
+# Load spaCy's English model
+nlp = spacy.load("en_core_web_sm")
+
+# Transformers coherence model (optional)
+coherence_model = pipeline("text-classification", model="distilbert-base-uncased-finetuned-sst-2-english")
+
 
 # API keys (replace with actual API keys)
 OPENAI_API_KEY = "haha...API nahi doonga main apna, env mein chupa ke rakhe hain"
@@ -52,3 +61,61 @@ def index(request):
         return render(request, "index.html", {"response": best_response})
 
     return render(request, "index.html")
+
+
+# Fluency Check with spaCy
+def check_fluency(response_text):
+    doc = nlp(response_text)
+    num_sentences = len(list(doc.sents))
+    num_tokens = len(doc)
+
+    # Score based on the number of sentences and proper token usage
+    if num_sentences == 0 or num_tokens == 0:
+        return 0  # Bad fluency score
+    return num_tokens / num_sentences  # The higher the better
+
+# Coherence Check with Transformers (Optional)
+def check_coherence(response_text):
+    result = coherence_model(response_text)
+    sentiment = result[0]['label']
+    if sentiment == 'POSITIVE':
+        return 1
+    else:
+        return 0
+
+
+
+# List of keywords for detecting humor
+HUMOR_KEYWORDS = ["funny", "joke", "haha", "lol", "lmao", "rofl", "pun", "comedy", "humor"]
+
+def detect_humor_keywords(response_text):
+    """Check for humor based on predefined keywords."""
+    humor_count = sum(1 for word in HUMOR_KEYWORDS if word in response_text.lower())
+    return humor_count > 0  # Return True if humor is detected
+
+def score_response(response):
+    response_text = response.get("choices")[0].get("text", "")
+
+    # Fluency score from spaCy
+    fluency_score = check_fluency(response_text)
+
+    # Coherence score (optional)
+    coherence_score = check_coherence(response_text)
+
+    # Length score (for response completeness)
+    length_score = len(response_text)
+
+    # Humor detection (using both methods)
+    humor_keyword_score = 1 if detect_humor_keywords(response_text) else 0
+    humor_model_score = 1 if detect_humor_model(response_text) else 0
+
+    # Combine humor scores (you can assign weights or use one method)
+    humor_score = (humor_keyword_score + humor_model_score) / 2
+
+    # Example time score (based on response time)
+    time_score = 1 / response.get("time_taken", 1)  # Prioritize faster responses
+
+    # Combine the scores with weighting (adjust weights as necessary)
+    total_score = (fluency_score * 0.3) + (coherence_score * 0.2) + (length_score * 0.2) + (humor_score * 0.2) + (time_score * 0.1)
+
+    return total_score
